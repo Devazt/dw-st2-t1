@@ -1,4 +1,21 @@
 import readlineSync from 'readline-sync';
+import fs from 'fs';
+
+// Function saving user data to JSON
+function saveUserDataToJSON(){
+    const dataToSave = JSON.stringify(userDatabase, null, 2);
+
+    fs.writeFileSync('userDatabase.json', dataToSave);
+}
+
+// Function loading user data to JSON
+function loadUserDataFromJSON() {
+    try {
+        const data = fs.readFileSync('userDatabase.json', 'utf8');
+        userDatabase.push(...JSON.parse(data));
+    } catch (error) {
+    }
+}
 
 // Interface for user data
 interface UserData {
@@ -57,7 +74,8 @@ function addData() {
     console.log("===================================================");
     console.log('Data berhasil ditambahkan');
     console.log("===================================================");
-
+    
+    saveUserDataToJSON();
     showMenu();
 }
 
@@ -71,6 +89,7 @@ function deleteData() {
         console.log("===================================================");
         console.log('Data berhasil dihapus.');        
         console.log("===================================================");
+        saveUserDataToJSON();
     } else {
         console.log("===================================================");
         console.log('Data tidak ditemukan.');
@@ -94,6 +113,7 @@ function editData() {
         console.log("===================================================");
         console.log('Data berhasil diubah');        
         console.log("===================================================");
+        saveUserDataToJSON();
     } else {
         console.log("===================================================");
         console.log('Data tidak ditemukan');        
@@ -106,6 +126,8 @@ function editData() {
 // Function Main
 function main() {
     console.log('Selamat Datang!');
+
+    loadUserDataFromJSON();
     
     showMenu();
 }
